@@ -1,0 +1,82 @@
+{
+  "extension": "@puddleworks/recipes-external",
+  "version": "2026.11.13.1",
+  "reviewedAt": "2026-11-13T12:40:12Z",
+  "dimensions": [
+    {
+      "id": "credentials-secrets",
+      "verdict": "pass",
+      "note": "No model code and no secrets in the pack. The recipe uses the desk's own github model (gh auth on that machine). ci.yml passes only SWAMP_API_KEY and SWAMP_SIGNIN_TOKEN to the template's publish job with permissions contents: read. The committed vault file holds only the local_encryption config (auto_generate), no key."
+    },
+    {
+      "id": "logging-quality",
+      "verdict": "na",
+      "note": "No model code; get_repo_info in @webframp/github logs its own fetch."
+    },
+    {
+      "id": "error-handling",
+      "verdict": "pass",
+      "note": "A missing repo gives ok false with the engine's 'swamp exited 1' and no number (AC4 in the engine check); the bare message is the engine's limit, not the pack's. A capture that is not owner/name is refused by the pattern and by the engine's repo shape."
+    },
+    {
+      "id": "testing-completeness",
+      "verdict": "pass",
+      "note": "9 tests pass (re-run at 5185d6f): tag compiles the way the engine's recipeFromWorkflow and parseRecipe check it, pattern held to the whole turn matches both agreed phrasings and refuses longer turns and the engine's any-turn probes, template renders 6, 0 and 1075, UUID ids. The engine helpers are a commented copy of @puddleworks/recipes 2026.11.10.1, which matches models/_lib/config.ts. Low gap: the dataName test asserts only the literal '{repo}', not the instance name it yields (CR1-2)."
+    },
+    {
+      "id": "idempotency-resilience",
+      "verdict": "pass",
+      "note": "A read: get_repo_info overwrites the repo_info instance named for the repo; safe to repeat. maxReruns 3 and maxWallClock 1m tags set."
+    },
+    {
+      "id": "api-contracts",
+      "verdict": "pass",
+      "note": "Uses @webframp/github get_repo_info (repo input; gh repo view --json ... issues). issues.totalCount counts open issues only and is not paged; the engine check matched cli/cli 1075 to gh and the search API and gave puddleworks-ui 0 with 6 open PRs. The tag keys fit the engine's strict LocalRecipe schema."
+    },
+    {
+      "id": "resource-management",
+      "verdict": "na",
+      "note": "No handles, connections or temp files in the pack."
+    },
+    {
+      "id": "published-surface-hygiene",
+      "verdict": "pass",
+      "note": "Manifest public with license MIT and repository set, ci.yml visibility public to match; ships only the one workflow plus README and LICENSE; template example model, workflow, review placeholder and optional/launcher removed. source.url is a 127.0.0.1 Capture page, documented in the README as local-only and accepted by the engine."
+    },
+    {
+      "id": "schema-strictness",
+      "verdict": "pass",
+      "note": "Workflow input repo is a required string; the recipe declares it as the engine's repo shape, so only owner/name reaches swamp."
+    },
+    {
+      "id": "lifetime-gc",
+      "verdict": "na",
+      "note": "No model of its own; lifetime is @webframp/github's."
+    },
+    {
+      "id": "crud-completeness",
+      "verdict": "na",
+      "note": "A read-only recipe, not a lifecycle model."
+    },
+    {
+      "id": "preflight-checks",
+      "verdict": "na",
+      "note": "Nothing to check before running; the README names what a desk needs (a github model and the reads: entry)."
+    },
+    {
+      "id": "instance-names",
+      "verdict": "pass",
+      "note": "dataName {repo} becomes owner-name by the engine's dataNameFor, the same name get_repo_info writes (args.repo with / as -); confirmed in the engine check (puddle-works-puddlerouter)."
+    },
+    {
+      "id": "data-access",
+      "verdict": "na",
+      "note": "No data.latest reads; contracts.ts is empty and contracts-check passes."
+    },
+    {
+      "id": "version-upgrades",
+      "verdict": "na",
+      "note": "First version, 2026.11.13.1; nothing published to upgrade from."
+    }
+  ]
+}
