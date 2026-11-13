@@ -1,0 +1,82 @@
+{
+  "extension": "@puddleworks/recipes-external",
+  "version": "2026.11.13.1",
+  "reviewedAt": "2026-11-13T12:59:56Z",
+  "dimensions": [
+    {
+      "id": "credentials-secrets",
+      "verdict": "pass",
+      "note": "Carried from round 1: the change since 5185d6f adds no secrets, permissions or CI settings. No model code and no secrets in the pack; the recipe uses the desk's own github model (gh auth on that machine); ci.yml passes only SWAMP_API_KEY and SWAMP_SIGNIN_TOKEN with contents: read."
+    },
+    {
+      "id": "logging-quality",
+      "verdict": "na",
+      "note": "Carried from round 1: no model code; get_repo_info in @webframp/github logs its own fetch."
+    },
+    {
+      "id": "error-handling",
+      "verdict": "pass",
+      "note": "Carried from round 1: a missing repo gives ok false with the engine's 'swamp exited 1' and no number (AC4); a capture that is not owner/name is refused by the pattern and the engine's repo shape. The new empty key does not change error paths: the engine renders it only for a recipe with each."
+    },
+    {
+      "id": "testing-completeness",
+      "verdict": "pass",
+      "note": "11 tests pass (re-run at fc1e628). New: 'the manifest lists every workflow by its file name' (manifest workflows: equals the bare names of workflows/*.yaml, no paths:) and 'has an answer for no open issues' (empty is non-blank with no placeholder; the template at 0 gives 'puddleworks-ui has 0 open issues.'). That empty is never shown without each (config.ts render, line 191-195 of @puddleworks/recipes 2026.11.10.1) is only a test comment, checked once in the engine check, like round 1's CR1-2 for dataName, which is still open (low)."
+    },
+    {
+      "id": "idempotency-resilience",
+      "verdict": "pass",
+      "note": "Carried from round 1: a read; get_repo_info overwrites the repo_info instance named for the repo; maxReruns 3 and maxWallClock 1m unchanged."
+    },
+    {
+      "id": "api-contracts",
+      "verdict": "pass",
+      "note": "The tag gains empty, which the engine's LocalRecipe schema declares (z.string().optional()); recipeFromWorkflow and parseRecipe accept the shipped workflow with no note (engine check). The rest is carried from round 1: get_repo_info's issues.totalCount counts open issues only and is not paged (cli/cli 1075, puddleworks-ui 0 with open PRs). Note: empty ('The repository has no open issues.') does not name the repo as the agreed whenEmpty asks and is never shown for this recipe; the zero answer comes from the template, which does name it (CR2-1)."
+    },
+    {
+      "id": "resource-management",
+      "verdict": "na",
+      "note": "Carried from round 1: no handles, connections or temp files in the pack."
+    },
+    {
+      "id": "published-surface-hygiene",
+      "verdict": "pass",
+      "note": "manifest.yaml now lists workflows: [workflow-github-open-issue-count.yaml] with no paths:, as the template does; the publish dry run at fc1e628 still ships workflows/workflow-github-open-issue-count.yaml plus README.md and LICENSE (content hash ce64cba3...). Public, MIT, repository set, unchanged. The README's new empty paragraph swallowed the tail of the previous paragraph ('puddlerouter takes the method and fixed inputs from the step.'), a wording slip (CR2-2, low)."
+    },
+    {
+      "id": "schema-strictness",
+      "verdict": "pass",
+      "note": "Carried from round 1: workflow input repo is a required string and the recipe declares the engine's repo shape. The added empty is a plain string with no placeholder, checked by the new test."
+    },
+    {
+      "id": "lifetime-gc",
+      "verdict": "na",
+      "note": "Carried from round 1: no model of its own; lifetime is @webframp/github's."
+    },
+    {
+      "id": "crud-completeness",
+      "verdict": "na",
+      "note": "Carried from round 1: a read-only recipe, not a lifecycle model."
+    },
+    {
+      "id": "preflight-checks",
+      "verdict": "na",
+      "note": "Carried from round 1: nothing to check before running; the README names what a desk needs (a github model and the reads: entry)."
+    },
+    {
+      "id": "instance-names",
+      "verdict": "pass",
+      "note": "Carried from round 1: dataName {repo} is unchanged and becomes owner-name, the name get_repo_info writes."
+    },
+    {
+      "id": "data-access",
+      "verdict": "na",
+      "note": "Carried from round 1: no data.latest reads; contracts.ts is empty and contracts-check passes (1 workflow OK at fc1e628)."
+    },
+    {
+      "id": "version-upgrades",
+      "verdict": "na",
+      "note": "Carried from round 1: first version, 2026.11.13.1, not yet published (dry run version-exists passed)."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+id: b210c126-c450-4a8c-80de-05b0bb27a2d8
+name: "@puddleworks/recipes-external-github-open-issue-count"
+description: >-
+  Say how many open issues a GitHub repository has, as an exact count. The
+  puddlerouterRecipe tag is the recipe puddlerouter reads: the phrasing it
+  matches (a regex that must match the whole turn), the data to show and how.
+  It calls the same method as this workflow's one step, so running this
+  workflow by hand gives the same data.
+version: 1
+tags:
+  maxReruns: "3"
+  maxWallClock: "1m"
+  puddlerouterRecipe: '{"id":"github-open-issue-count","extension":"@webframp/github","pattern":"^how many open issues does ([\\w.-]+/[\\w.-]+) have[?.!]?$","dataName":"{repo}","inputs":{"repo":{"capture":1,"as":"repo"}},"template":"{name} has {issues.totalCount} open issues.","empty":"The repository has no open issues.","source":{"url":"http://127.0.0.1:3002/requests/0dd2ede4-485b-4316-a530-9a8e5d0ae1f8","version":1}}'
+inputs:
+  type: object
+  properties:
+    repo:
+      type: string
+      description: The repository as owner/name.
+  required:
+    - repo
+jobs:
+  - name: main
+    steps:
+      - name: count
+        task:
+          type: model_method
+          modelIdOrName: github
+          methodName: get_repo_info
+          inputs:
+            repo: ${{ inputs.repo }}

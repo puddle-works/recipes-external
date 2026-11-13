@@ -32,3 +32,17 @@ Deno.test("every workflow has its own UUID id", async () => {
   assert(ids.length > 0, "no workflows found");
   assertEquals(new Set(ids).size, ids.length, "two workflows share an id");
 });
+
+Deno.test("the manifest lists every workflow by its file name", async () => {
+  // swamp reads manifest workflows: relative to workflows/, and Factory's
+  // readiness check looks for each file's bare name there.
+  const manifest = parse(
+    await Deno.readTextFile(new URL("../../manifest.yaml", import.meta.url)),
+  ) as { workflows?: string[]; paths?: unknown };
+  assertEquals(manifest.paths, undefined, "manifest sets paths:");
+  const files: string[] = [];
+  for await (const entry of Deno.readDir(dir)) {
+    if (entry.name.endsWith(".yaml")) files.push(entry.name);
+  }
+  assertEquals([...(manifest.workflows ?? [])].sort(), files.sort());
+});
