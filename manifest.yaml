@@ -1,0 +1,17 @@
+manifestVersion: 1
+name: "@puddleworks/recipes-external"
+version: "2026.11.13.1"
+description: "GitHub recipes for puddlerouter, answered from @webframp/github without calling Claude. First recipe: how many open issues a repository has, as an exact count. Each workflow carries one recipe in its puddlerouterRecipe tag."
+visibility: public
+license: MIT
+repository: https://github.com/puddle-works/recipes-external
+labels:
+  - puddlerouter-recipe
+  - github
+additionalFiles:
+  - README.md
+  - LICENSE
+paths:
+  base: manifest
+workflows:
+  - workflows/workflow-github-open-issue-count.yaml

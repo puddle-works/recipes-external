@@ -54,26 +54,27 @@ directly). Every `swamp model …` spelling remains supported.
 ## Puddle repo
 
 This repo is a puddle made from `puddle-works/puddle-template` ([ADR-004][adr]).
-It holds one puddle: one extension with one bounded purpose.
+It holds one recipe pack, `@puddleworks/recipes-external`: workflows whose
+`puddlerouterRecipe` tag puddlerouter reads, with no model code of its own.
 
-- `make test` runs every test in `extensions/models/`. One of them checks that
-  each workflow is a `workflow-*.yaml` file with its own UUID `id`; swamp skips
-  any other file without a word.
+- `make test` runs every test in `extensions/models/`. `recipes_test.ts`
+  checks each workflow's recipe tag the way `@puddleworks/recipes` compiles it
+  and each recipe against its agreed phrasings; `workflows_test.ts` checks that
+  each workflow is a `workflow-*.yaml` file with its own UUID `id`, since swamp
+  skips any other file without a word.
+- A new recipe is a new `workflows/workflow-*.yaml` with one `model_method`
+  step, listed under `workflows:` in `manifest.yaml`, with its phrasings added
+  to `recipes_test.ts` first.
 - `make contracts-check` and `make guardrails-check` run the shared checks from
   puddle-tooling. Every workflow in `workflows/` needs `maxReruns` and
   `maxWallClock` tags, and a workflow that reads another model's data with
   `data.latest` needs an entry in `contracts.ts`.
-- `make publish VISIBILITY=private DRY_RUN=1` runs the publish dry run. Never
-  push with `--yes`; `VISIBILITY` must equal `visibility:` in `manifest.yaml`.
+- `make publish VISIBILITY=public DRY_RUN=1` runs the publish dry run. Never
+  push with `--yes`; `VISIBILITY` must equal `visibility:` in `manifest.yaml`
+  and in `ci.yml`.
 - Review reports live in `swamp-extension-review/` and are committed with the
   version they review. `.claude/settings.json` asks before each adversarial
   review round starts, since a round costs a fresh agent: a build has two at
   most, publish included, as Factory's `round` counts them.
-- `example.ts`, its test and `workflows/workflow-example.yaml` are
-  placeholders. Replace them; do not extend them.
-- A web UI is Preact rendered on the server, written with `h()` in `.ts`,
-  because the swamp registry rejects `.tsx`. Capture's page works this way
-  ([ADR-006][ui]).
 
 [adr]: https://github.com/puddle-works/puddleworks-apps/blob/main/docs/adr/ADR-004-one-repo-per-puddle.md
-[ui]: https://github.com/puddle-works/puddleworks-capture/blob/main/docs/adr/ADR-006-preact-on-the-server.md
