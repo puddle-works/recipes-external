@@ -33,7 +33,12 @@ Each recipe is a workflow with one `model_method` step. Its
 `puddlerouterRecipe` tag is JSON with `id`, `pattern` (a regex that must match
 the whole turn), `extension` (the extension that holds the model type),
 `dataName`, `inputs` (which regex capture feeds which input, and its shape:
-`int`, `repo` or `word`), `template`, and `source`. puddlerouter takes the
+`int`, `repo` or `word`), `template`, `empty`, and `source`.
+
+`empty` is shown as written, and only by a recipe with `each` (a list) when
+the list is empty. A count recipe has no `each`, so for a repo with no open
+issues the template answers, naming the repo: "puddleworks-ui has 0 open
+issues." puddlerouter takes the
 method and fixed inputs from the step.
 
 `source` links the recipe to the Capture request it answers. Its `url` is the

@@ -217,3 +217,16 @@ Deno.test("github-open-issue-count says the exact count from get_repo_info", asy
     "cli has 1075 open issues.",
   );
 });
+
+Deno.test("github-open-issue-count has an answer for no open issues", async () => {
+  const [, r] = await recipe("github-open-issue-count");
+  // The engine shows `empty` as written, with no placeholders filled, and only
+  // for a recipe with `each`. With no `each`, a repo with no open issues gets
+  // the template, which names it as the agreed whenEmpty asks.
+  assert(r.empty && r.empty.trim().length > 0, "empty is blank");
+  assertEquals(/\{[\w.]+\}/.test(r.empty), false, "empty has a placeholder");
+  assertEquals(
+    fill(r.template, { name: "puddleworks-ui", issues: { totalCount: 0 } }),
+    "puddleworks-ui has 0 open issues.",
+  );
+});

@@ -11,7 +11,5 @@ labels:
 additionalFiles:
   - README.md
   - LICENSE
-paths:
-  base: manifest
 workflows:
-  - workflows/workflow-github-open-issue-count.yaml
+  - workflow-github-open-issue-count.yaml
